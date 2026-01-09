@@ -176,4 +176,3 @@ window.onload = function () {
   }
   loadTodayAndTomorrow();
 };
-
