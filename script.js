@@ -1,85 +1,179 @@
-const messMenu = {
-  monday: {
-    b: "Veg Pasta & Ketchup, Tea/Coffee",
-    l: "Dahi Onion Sabji, Chora, Roti, Dal, Rice, Buttermilk",
-    d: "Dum Aloo, Roti, Dal, Rice, Onion Salad"
-  },
-  tuesday: {
-    b: "Aloo Paratha Sandwich, Tea/Coffee",
-    l: "Tinda Dry Fry, Matar, Roti, Dal, Rice",
-    d: "Palak Moong Dal, Roti, Kadhi, Masala Rice"
-  },
-  wednesday: {
-    b: "Farsi Puri, Tea/Coffee",
-    l: "Dudhi Chana Dal, Math, Roti, Dal, Rice",
-    d: "Dahi Vada, Roti, Chana Dal, Masala Rice"
-  },
-  thursday: {
-    b: "Masala Poha, Tea/Coffee",
-    l: "Dana Methi, Ringan Dal, Roti, Dal, Rice",
-    d: "Aloo Kurma, Roti, Masala Rice"
-  },
-  friday: {
-    b: "Idli & Peanut Chutney, Tea/Coffee",
-    l: "Fansi Sabji, Desi Chana, Roti, Dal, Rice",
-    d: "Green Mix Veg, Roti, Jeera Rice, Dal Fry"
-  },
-  saturday: {
-    b: "Corn Peanut, Tea/Coffee",
-    l: "Aloo Gobi, Roti, Dal, Rice",
-    d: "Rajma Masala, Roti, Rice, Kadhi Pakoda"
-  },
-  sunday: {
-    b: "Bread & Jam, Tea/Coffee",
-    l: "Chole, Puri, Kadhi, Jeera Rice",
-    d: "Veg Masala Khichdi, Sev Usal, Pav"
-  }
+// REAL mess menu data
+const menuData = {
+  0: `
+🍳 Breakfast: Bread & Jam, Tea / Coffee
+
+🍛 Lunch:
+• Chole
+• Puri
+• Kadhi
+• Jeera Rice
+• Fries
+• Chilli Fry
+
+🍽️ Dinner:
+• Veg Masala Khichdi
+• Sev Usal
+• Pav
+• Pickle
+  `,
+  1: `
+🍳 Breakfast: Veg Pasta & Ketchup, Tea / Coffee
+
+🍛 Lunch:
+• Dahi Onion Sabji
+• Chora
+• Roti
+• Dal
+• Rice
+• Butter Milk
+
+🍽️ Dinner:
+• Dum Aloo
+• Roti
+• Dal
+• Rice
+• Onion Salad
+  `,
+  2: `
+🍳 Breakfast: Aloo Paratha Sandwich, Tea / Coffee
+
+🍛 Lunch:
+• Tinda Dry Fry
+• Matar
+• Roti
+• Dal
+• Rice
+• Butter Milk
+
+🍽️ Dinner:
+• Palak Moong Dal
+• Roti
+• Kadhi (Sweet/Spicy)
+• Masala Rice
+• Cabbage Sambharo
+  `,
+  3: `
+🍳 Breakfast: Farsi Puri, Tea / Coffee
+
+🍛 Lunch:
+• Dudhi Chana Dal
+• Math
+• Roti
+• Dal
+• Rice
+• Butter Milk
+
+🍽️ Dinner:
+• Dahi Vada (Sweet & Salted)
+• Roti
+• Chana Dal
+• Masala Rice
+  `,
+  4: `
+🍳 Breakfast: Masala Poha, Tea / Coffee
+
+🍛 Lunch:
+• Dana Methi
+• Ringan Dal
+• Roti
+• Dal (Sweet/Spicy)
+• Plain Rice
+• Butter Milk
+• Salad
+
+🍽️ Dinner:
+• Aloo Kurma
+• Roti
+• Chas Bharo Aloo
+• Masala Rice / Biryani
+  `,
+  5: `
+🍳 Breakfast: Idli & Peanut Chutney, Tea / Coffee
+
+🍛 Lunch:
+• Fansi Sabji
+• Desi Chana
+• Roti
+• Dal
+• Rice
+• Butter Milk
+• Salad
+
+🍽️ Dinner:
+• Green Mix Veg
+• Roti
+• Jeera Rice
+• Dal Fry
+  `,
+  6: `
+🍳 Breakfast: Corn Peanut, Tea / Coffee
+
+🍛 Lunch:
+• Aloo Gobi
+• Roti
+• Dal
+• Rice
+• Butter Milk
+• Salad
+
+🍽️ Dinner:
+• Rajma Masala
+• Roti
+• Rice
+• Kadhi Pakoda
+• Lachha Pyaz
+  `
 };
 
-function showMenu(day) {
-  const menu = document.getElementById("menu");
+const days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
 
-  if (!messMenu[day]) {
-    menu.innerHTML = "";
-    return;
-  }
-
-  menu.innerHTML = `
-    <h3>🍳 Breakfast</h3>
-    <p>${messMenu[day].b}</p>
-
-    <h3>🍛 Lunch</h3>
-    <p>${messMenu[day].l}</p>
-
-    <h3>🍽️ Dinner</h3>
-    <p>${messMenu[day].d}</p>
-  `;
+// Format date
+function formatDate(date) {
+  return date.toDateString();
 }
 
-/* 🌙 Dark mode toggle */
-function toggleDarkMode() {
+// Load today & tomorrow
+function loadTodayAndTomorrow() {
+  const today = new Date();
+  const tomorrow = new Date();
+  tomorrow.setDate(today.getDate() + 1);
+
+  document.getElementById("todayTitle").innerText =
+    `📌 Today (${days[today.getDay()]}) - ${formatDate(today)}`;
+  document.getElementById("todayMenu").innerText =
+    menuData[today.getDay()];
+
+  document.getElementById("tomorrowTitle").innerText =
+    `⏭️ Tomorrow (${days[tomorrow.getDay()]}) - ${formatDate(tomorrow)}`;
+  document.getElementById("tomorrowMenu").innerText =
+    menuData[tomorrow.getDay()];
+}
+
+// Show selected day
+function showSelectedDay() {
+  const val = document.getElementById("daySelect").value;
+  const box = document.getElementById("selectedMenu");
+  box.innerText = val === "" ? "" : `📅 ${days[val]} Menu:\n${menuData[val]}`;
+}
+
+/* 🌙 THEME TOGGLE */
+function toggleTheme() {
   document.body.classList.toggle("dark");
   localStorage.setItem(
     "theme",
     document.body.classList.contains("dark") ? "dark" : "light"
   );
+  document.getElementById("themeBtn").innerText =
+    document.body.classList.contains("dark") ? "☀️" : "🌙";
 }
 
-/* Load saved theme */
-if (localStorage.getItem("theme") === "dark") {
-  document.body.classList.add("dark");
-}
-
-/* Automatically detect today */
+// Load theme + menu on start
 window.onload = function () {
-  const days = ["sunday","monday","tuesday","wednesday","thursday","friday","saturday"];
-  const today = new Date().getDay(); // 0 = Sunday, 1 = Monday, etc.
-  const todayStr = days[today];
-  showMenu(todayStr);
-
-  // Also set the dropdown to today if exists
-  const select = document.getElementById("day");
-  if (select) {
-    select.value = todayStr;
+  if (localStorage.getItem("theme") === "dark") {
+    document.body.classList.add("dark");
+    document.getElementById("themeBtn").innerText = "☀️";
   }
+  loadTodayAndTomorrow();
 };
+
